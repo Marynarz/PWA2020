@@ -14,8 +14,7 @@ class User(models.Model):
 # Class Board - class represents unique board
 class Board(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)                       # Board owner, only one,
-                                                                                    # remove if remove user
-    create_time = models.DateTimeField()                                            # create time, not null
+    create_time = models.DateTimeField(auto_now_add=True)                           # create time, not null
     participants = models.ManyToManyField(User, related_name='+')                   # board pariticipants
     board_name = models.CharField(max_length=20)                                    # board name, max 20 signs
 
@@ -37,7 +36,7 @@ class Tab(models.Model):
 # Class Element - basic element of Tab
 class Element(models.Model):
     tab = models.ForeignKey(Tab, on_delete=models.CASCADE)                               # Element owner
-    create_time = models.DateTimeField()                                                 # Create time
+    create_time = models.DateTimeField(auto_now_add=True)                                                 # Create time
     creator = models.ForeignKey(User, on_delete=models.DO_NOTHING)                       # Creator
     elem_name = models.CharField(max_length=20)                                          # Name of element
     description = models.TextField()                                                     # Task description
