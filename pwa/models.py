@@ -13,10 +13,11 @@ class User(models.Model):
 
 # Class Board - class represents unique board
 class Board(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)    # Board owner, only one, remove if remove user
-    create_time = models.DateTimeField()                         # create time, not null
-    participants = models.ManyToManyField(User)                  # board pariticipants
-    board_name = models.CharField(max_length=20)                 # board name, max 20 signs
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)                       # Board owner, only one,
+                                                                                    # remove if remove user
+    create_time = models.DateTimeField()                                            # create time, not null
+    participants = models.ManyToManyField(User, related_name='+')                   # board pariticipants
+    board_name = models.CharField(max_length=20)                                    # board name, max 20 signs
 
     def __str__(self):
         return 'Board: %s, create time: %s, owner: %s' % (self.board_name, self.create_time, self.owner)
@@ -35,13 +36,13 @@ class Tab(models.Model):
 
 # Class Element - basic element of Tab
 class Element(models.Model):
-    tab = models.ForeignKey(Tab, on_delete=models.CASCADE)             # Element owner
-    create_time = models.DateTimeField()                               # Create time
-    creator = models.ForeignKey(User, on_delete=models.DO_NOTHING)     # Creator
-    elem_name = models.CharField(max_length=20)                        # Name of element
-    description = models.TextField()                                   # Task description
-    estimation = models.DurationField()                                # Time estimated
-    assignee = models.ForeignKey(User, on_delete=models.DO_NOTHING)    # Assignee
+    tab = models.ForeignKey(Tab, on_delete=models.CASCADE)                               # Element owner
+    create_time = models.DateTimeField()                                                 # Create time
+    creator = models.ForeignKey(User, on_delete=models.DO_NOTHING)                       # Creator
+    elem_name = models.CharField(max_length=20)                                          # Name of element
+    description = models.TextField()                                                     # Task description
+    estimation = models.DurationField()                                                  # Time estimated
+    assignee = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='+')    # Assignee
 
     def __str__(self):
         return 'Element: %s\n\tDescription: %s' % (self.elem_name, self.description)
