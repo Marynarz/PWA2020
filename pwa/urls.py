@@ -21,5 +21,6 @@ from . import views
 app_name = 'pwa'
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/<int:user_id>/', views.user_detail, name='user_detail')
+    path('user/<int:user_id>/', views.user_detail, name='user_detail'),
+    path('register_user', views.register_user, name='register_user'),
 ]
