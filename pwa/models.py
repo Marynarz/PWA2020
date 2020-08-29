@@ -3,7 +3,7 @@ from django.db import models
 
 # Class User - class represents unique user
 class User(models.Model):
-    nick_name = models.CharField(max_lenth=20)                  # nick name, max. 20 signs
+    nick_name = models.CharField(max_length=20)                  # nick name, max. 20 signs
     mail = models.EmailField(max_length=50)                     # mail, max 20 signs
     password = models.CharField(max_length=20)                  # password, max 20 signs
 
