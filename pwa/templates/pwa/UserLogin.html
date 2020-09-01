@@ -1,0 +1,12 @@
+{% extends 'pwa/Base.html' %}
+
+{% block title %}LOGIN{% endblock %}
+
+{% block content %}
+    <h2>Login</h2>
+    <form method="post">
+    {% csrf token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+    </form>
+{% endblock %}

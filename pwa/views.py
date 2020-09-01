@@ -23,3 +23,7 @@ def register_user(request):
     else:
         form = UserCreationForm()
     return render(request, 'pwa/UserReg.html', {'form': form})
+
+
+def index(request):
+    return render(request, 'pwa/index.html')
