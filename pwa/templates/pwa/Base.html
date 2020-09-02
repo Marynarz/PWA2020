@@ -9,10 +9,21 @@
 </head>
 <body>
 <div class="container">
+    <nav class="navbar navbar-expend-lg bg-light">
+        <h1 class="mt-2" style="font-family: Pacifico">Trello klon - PWA 2020</h1>
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">Menu</a>
+            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="login">Login</a>
+                <a class="dropdown-item" href="register">Register</a>
+            </div>
+        </li>
+        </ul>
+    </nav>
     <div class="row justify-content-center">
         <div class="col-8">
-            <h1 class="mt-2" style="font-family: Pacifico">Trello klon - PWA 2020</h1>
-            <hr class="mt-0 mb-4">
             {% block title %}
             {% endblock %}
         </div>
