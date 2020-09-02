@@ -5,8 +5,9 @@
 {% block content %}
     <h2>Login</h2>
     <form method="post">
-    {% csrf token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
+    {% csrf_token %}
+    <input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
+    <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+    <button type="submit" class="btn btn-light btn-outline-danger" value="LogIn">Login</button>
     </form>
 {% endblock %}
