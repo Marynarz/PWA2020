@@ -52,8 +52,7 @@ def create_board(request):
     if request.method == 'POST':
         form = BoardForm(request.POST)
         if form.is_valid():
-            form.save()
-            board = Board(owner=request.user.id, board_name=form.cleaned_data.get('board_name'))
+            board = Board(owner=request.user, board_name=form.cleaned_data.get('board_name'))
             board.save()
             return redirect('index')
     else:
