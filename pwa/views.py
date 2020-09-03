@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import *
+from .forms import *
 
 
 def user_detail(request, user_id):
@@ -22,11 +24,13 @@ def register_user(request):
             return redirect('index')
     else:
         form = UserCreationForm()
-    return render(request, 'pwa/UserReg.html', {'form': form})
+    return render(request, 'pwa/Forms.html', {'form': form})
 
 
+@login_required(login_url='/login')
 def index(request):
-    return render(request, 'pwa/index.html', {'logged_in': request.user.is_authenticated})
+    aval_boards = Board.objects.filter(owner_id=request.user.id)
+    return render(request, 'pwa/UserHome.html', {'logged_in': request.user.is_authenticated, 'boards': aval_boards})
 
 
 def logout_view(request):
@@ -40,8 +44,20 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return redirect('index')
-        else:
-            pass
-    else:
-        pass
     return render(request, 'pwa/UserLogin.html')
+
+
+@login_required(login_url='/login')
+def create_board(request):
+    if request.method == 'POST':
+        form = BoardForm(request.POST)
+        if form.is_valid():
+            form.save()
+            board = Board(owner=request.user.id, board_name=form.cleaned_data.get('board_name'))
+            board.save()
+            return redirect('index')
+    else:
+        form = BoardForm
+
+    return render(request, 'pwa/Forms.html', {'form': form})
+
