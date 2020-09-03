@@ -26,7 +26,7 @@ def register_user(request):
 
 
 def index(request):
-    return render(request, 'pwa/index.html')
+    return render(request, 'pwa/index.html', {'logged_in': request.user.is_authenticated})
 
 
 def logout_view(request):
