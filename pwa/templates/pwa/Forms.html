@@ -1,7 +1,10 @@
 {% extends 'pwa/Base.html' %}
 
+{% block title %}
+    {{ method_name }}
+{% endblock %}}
+
 {% block content %}
-  <h2>Sign up</h2>
   <form method="post">
     {% csrf_token %}
     {% for field in form %}
@@ -16,6 +19,6 @@
         {% endfor %}
       </p>
     {% endfor %}
-    <button type="zarejestruj">Sign up</button>
+    <button type="Add">Sign up</button>
   </form>
 {% endblock %}

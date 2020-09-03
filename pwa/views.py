@@ -24,7 +24,7 @@ def register_user(request):
             return redirect('index')
     else:
         form = UserCreationForm()
-    return render(request, 'pwa/Forms.html', {'form': form})
+    return render(request, 'pwa/Forms.html', {'form': form, 'method_name': 'Register'})
 
 
 @login_required(login_url='/login')
@@ -59,5 +59,5 @@ def create_board(request):
     else:
         form = BoardForm
 
-    return render(request, 'pwa/Forms.html', {'form': form})
+    return render(request, 'pwa/Forms.html', {'form': form, 'method_name': 'Create board'})
 

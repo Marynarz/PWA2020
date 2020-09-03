@@ -4,6 +4,7 @@
 
 {% block content %}
     {% for board in boards %}
+    <div class="card-columns">
         <div class="card text-white bg-dark">
             <div class="card-header">
                 board.board_name
@@ -11,7 +12,7 @@
             <div class="card-body">
                 board.owner
             </div>
-
         </div>
+    </div>
     {% endfor %}
 {% endblock %}
