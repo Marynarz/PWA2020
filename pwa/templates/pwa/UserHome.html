@@ -3,9 +3,10 @@
 {% block title %}Homepage {% endblock %}
 
 {% block content %}
+{% csrf_token %}
     {% for board in boards %}
-    <div class="card-columns col">
-        <div class="card text-white bg-dark">
+    <div class="card-columns">
+        <div class="card text-white bg-dark col">
             <div class="card-header">
                 {{ board.board_name }}
             </div>
