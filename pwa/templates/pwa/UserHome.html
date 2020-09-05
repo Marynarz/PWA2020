@@ -4,13 +4,13 @@
 
 {% block content %}
     {% for board in boards %}
-    <div class="card-columns">
-        <div class="card text-white bg-dark col-2">
+    <div class="card-columns col">
+        <div class="card text-white bg-dark">
             <div class="card-header">
                 {{ board.board_name }}
             </div>
             <div class="card-body">
-                {{ board.owner }}
+                <p class="card-txt">{{ board.owner }}</p>
             </div>
         </div>
     </div>
