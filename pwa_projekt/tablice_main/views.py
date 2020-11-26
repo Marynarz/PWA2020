@@ -21,21 +21,22 @@ def register_user(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('index')
+            return redirect('/index')
     else:
         form = UserCreationForm()
-    return render(request, 'pwa/Forms.html', {'form': form, 'method_name': 'Register'})
+    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Register'})
 
 
 @login_required(login_url='/login')
 def index(request):
     aval_boards = Board.objects.filter(owner_id=request.user.id)
-    return render(request, 'pwa/UserHome.html', {'logged_in': request.user.is_authenticated, 'boards': aval_boards})
+    return render(request, 'tablice_main/user-home.html', {'logged_in': request.user.is_authenticated,
+                                                           'boards': aval_boards})
 
 
 def logout_view(request):
     logout(request)
-    return render(request, 'pwa/Base.html', {'content': 'LogOut succesfull'})
+    return render(request, 'tablice_main/base.html', {'content': 'LogOut succesfull'})
 
 
 def login_view(request):
@@ -43,8 +44,8 @@ def login_view(request):
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             login(request, user)
-            return redirect('index')
-    return render(request, 'pwa/UserLogin.html')
+            return redirect('/index')
+    return render(request, 'tablice_main/user-login.html')
 
 
 @login_required(login_url='/login')
@@ -54,8 +55,8 @@ def create_board(request):
         if form.is_valid():
             board = Board(owner=request.user, board_name=form.cleaned_data.get('board_name'))
             board.save()
-            return redirect('index')
+            return redirect('/index')
     else:
         form = BoardForm
 
-    return render(request, 'pwa/Forms.html', {'form': form, 'method_name': 'Create board'})
+    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create board'})
