@@ -1,0 +1,19 @@
+{% extends 'pwa/Base.html' %}
+
+{% block title %}Homepage {% endblock %}
+
+{% block content %}
+{% csrf_token %}
+    {% for board in boards %}
+    <div class="card-columns">
+        <div class="card text-white bg-dark col">
+            <div class="card-header">
+                {{ board.board_name }}
+            </div>
+            <div class="card-body">
+                <p class="card-txt">{{ board.owner }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}s
+{% endblock %}
