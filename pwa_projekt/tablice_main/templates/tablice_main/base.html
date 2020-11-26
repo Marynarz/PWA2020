@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrint-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}" />
     <title>Trello - klon - pwa</title>
+    <script>
+    $(document).ready(function(){
+        $("button").click( function() {
+           alert("You clicked the button using JQuery!");
+           });
+    } );
+    </script>
 </head>
 <body style="padding-top: 65px">
 <div class="container">
