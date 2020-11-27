@@ -6,17 +6,14 @@
 {% csrf_token %}
     {% for board in boards %}
     <div class="row">
-        <div class="card text-white bg-dark col">
+        <div class="card text-white bg-dark col board">
             <div class="card-header">
                 {{ board.board_name }}
             </div>
-            <div class="card-body">
+            <div class="card-body board-body">
                 <p class="card-txt">{{ board.owner }}</p>
             </div>
         </div>
     </div>
-<div>
-    <button> Click Me - I'm Javascript on Speed</button>
-</div>
     {% endfor %}
 {% endblock %}

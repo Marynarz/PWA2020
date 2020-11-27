@@ -1,0 +1,11 @@
+.board {
+    background-color: #f6b737;
+    border-radius: 8px;
+    border-style: solid;
+    border-color: #86aadf;
+    border-width: 3px;
+}
+
+.board-body{
+    border-style: solid;
+}
