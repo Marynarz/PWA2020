@@ -4,8 +4,8 @@
 
 {% block content %}
 {% csrf_token %}
-    {% for board in boards %}
-    <div class="row">
+<div class="row">
+{% for board in boards %}
         <div class="card text-white bg-dark col board">
             <div class="card-header">
                 {{ board.board_name }}
@@ -14,6 +14,6 @@
                 <p class="card-txt">{{ board.owner }}</p>
             </div>
         </div>
-    </div>
     {% endfor %}
+</div>
 {% endblock %}
