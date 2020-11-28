@@ -1,0 +1,28 @@
+{% extends 'tablice_main/base.html' %}
+
+{% block title %}Homepage {% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="row">
+        <div class="card text-white bg-dark col">
+            <div class="card-header">
+                {{ board.board_name }}
+            </div>
+            <div class="card-body">
+                {% for tab in tabs %}
+                <div>
+                    <div>{{ tab.tab_name }}</div>
+                    <div>
+                        {% for elem in elems %}
+                            {% if elem.tab == tab %}
+                                <div> {{ elem.elem_name }} </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</div>
+{% endblock %}

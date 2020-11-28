@@ -60,3 +60,12 @@ def create_board(request):
         form = BoardForm
 
     return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create board'})
+
+
+@login_required(login_url='/login')
+def show_board(request, board_name):
+    board = Board.objects.get(board_name=board_name)
+    tables = Tab.objects.filter(board=board)
+    elems = Element.objects.filter(tab=tables)
+    ret_dict = {'board': board, 'tabs': tables, 'elems': elems}
+    return render(request, 'tablice_main/board.html', ret_dict)
