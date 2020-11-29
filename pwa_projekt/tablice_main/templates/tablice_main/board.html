@@ -1,29 +1,35 @@
 {% extends 'tablice_main/base.html' %}
 
+{% block navigation %}
+<li class="nav-item">
+    <a class="nav-link" href="/board/{{ board.id }}/new_tab">Add tab</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/index">Home</a>
+</li>
+
+{% endblock %}
+
 {% block title %}Homepage {% endblock %}
 
 {% block content %}
 {% csrf_token %}
-<div class="row">
-        <div class="card text-white bg-dark col">
-            <div class="card-header">
-                {{ board.board_name }}
-            </div>
-            <div class="card-body">
+        <div class="container">
+            <div class="row card-deck">
                 {% for tab in tabs %}
-                <div class="tab">
-                    <div>{{ tab.tab_name }}</div>
-                    <div>
-                        <div>Usun <a href="#" data-href="/operation/{{ board.id }}/{{tab.id}}" class="tab-remove">{{ tab.tab_name }}</a></div>
+                <div class="tab card bg-light">
+                    <div class="card-header">{{ tab.tab_name }}</div>
+                    <div class="card-body">
                         {% for elem in elems %}
                             {% if elem.tab == tab %}
                                 <div> {{ elem.elem_name }} </div>
                             {% endif %}
                         {% endfor %}
                     </div>
+                    <div class="card-footer">Usun <a href="#" data-href="/operation/{{ board.id }}/{{tab.id}}" class="remove_obj">{{ tab.tab_name }}</a></div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-</div>
+
 {% endblock %}

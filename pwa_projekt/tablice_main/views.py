@@ -60,7 +60,8 @@ def create_board(request):
     else:
         form = BoardForm
 
-    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create board'})
+    return render(request, 'tablice_main/forms.html', {'logged_in': request.user.is_authenticated,
+                                                       'form': form, 'method_name': 'Create board'})
 
 
 @login_required(login_url='/login')
@@ -68,7 +69,7 @@ def show_board(request, board_id):
     board = Board.objects.get(id=board_id)
     tables = Tab.objects.filter(board=board)
     elems = Element.objects.filter(tab__in=tables)
-    ret_dict = {'board': board, 'tabs': tables, 'elems': elems}
+    ret_dict = {'board': board, 'tabs': tables, 'elems': elems, 'logged_in': request.user.is_authenticated}
     return render(request, 'tablice_main/board.html', ret_dict)
 
 
@@ -89,7 +90,8 @@ def add_tab(request, board_id):
     else:
         form = TabForm
 
-    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create tab'})
+    return render(request, 'tablice_main/forms.html', {'logged_in': request.user.is_authenticated,
+                                                       'form': form, 'method_name': 'Create tab'})
 
 
 @login_required(login_url='/login')
@@ -105,7 +107,8 @@ def add_elem(request, board_id, tab_id):
             return redirect('/board/%d' % board_id)
     else:
         form = TaskForm
-    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create elem'})
+    return render(request, 'tablice_main/forms.html', {'logged_in': request.user.is_authenticated,
+                                                       'form': form, 'method_name': 'Create elem'})
 
 
 @login_required(login_url='/login')
