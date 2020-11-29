@@ -18,7 +18,7 @@ $(function(){
     $(".board").click(function(){
         $(this).children(".board-body").slideToggle();
     });
-    $(".tab-remove").click(function(){
+    $(".remove_obj").click(function(){
         var data = $(this).data('href');
         var csrftoken = getCookie('csrftoken');
         $.ajax({

@@ -8,11 +8,15 @@
 {% for board in boards %}
         <div class="card text-white bg-dark col board">
             <div class="card-header">
-                {{ board.board_name }}
+                <a href="/board/{{ board.id}}">
+                    {{ board.board_name }}</a>
             </div>
             <div class="card-body board-body">
                 <p class="card-txt">{{ board.owner }}</p>
                 <p class="card-txt">Id: {{ board.id }}</p>
+                <p class="card-tcxt">
+                    <a href="#" data-href="/operation/{{ board.id }}" class="remove_obj">{{ board.board_name }}
+                    </a></p>
             </div>
         </div>
     {% endfor %}

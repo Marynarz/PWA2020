@@ -103,5 +103,6 @@ def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
                 Tab.objects.filter(board__id=board_id).get(id=tab_id).delete()
             elif board_id:
                 Board.objects.get(id=board_id).delete()
+        if request.POST['operation'] == POST_OPERATION_ADD:
         return HttpResponse('OK')
     return HttpResponse('NOK')
