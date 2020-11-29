@@ -11,9 +11,10 @@
             </div>
             <div class="card-body">
                 {% for tab in tabs %}
-                <div>
+                <div class="tab">
                     <div>{{ tab.tab_name }}</div>
                     <div>
+                        <div>Usun <a href="#" data-href="/operation/{{ board.id }}/{{tab.id}}" class="tab-remove">{{ tab.tab_name }}</a></div>
                         {% for elem in elems %}
                             {% if elem.tab == tab %}
                                 <div> {{ elem.elem_name }} </div>

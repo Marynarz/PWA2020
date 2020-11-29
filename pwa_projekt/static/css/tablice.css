@@ -9,3 +9,14 @@
 .board-body{
     border-style: solid;
 }
+
+.tab {
+    background-color: yellow;
+}
+
+.tab-body{
+    background-color: red;
+}
+.tab_remove{
+    border_style:solid;
+}

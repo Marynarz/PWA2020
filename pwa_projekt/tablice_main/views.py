@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import *
 from .forms import *
+from .app_defs import *
 
 
 def user_detail(request, user_id):
@@ -74,18 +75,33 @@ def show_board(request, board_id):
 @login_required(login_url='/login')
 def add_tab(request, board_id):
     if request.method == 'POST':
-        board = Board.objects.get(id=board_id)
-        last_tab = Tab.objects.filter(board=board).order_by('-position').values_list('position')
+        last_tab = Tab.objects.filter(board__id=board_id).order_by('-position').values_list('position')
         if len(last_tab) == 0:
             last_tab = 0
         else:
             last_tab = last_tab[0][0]
         form = TabForm(request.POST)
         if form.is_valid():
-            tab = Tab(board=board, tab_name=form.cleaned_data.get('tab_name'), position=last_tab + 1)
+            tab = Tab(board=Board.objects.get(id=board_id), tab_name=form.cleaned_data.get('tab_name'),
+                      position=last_tab + 1)
             tab.save()
-            return redirect('/board/' + board_id)
+            return redirect('/board/%d' % board_id)
     else:
-        form = BoardForm
+        form = TabForm
 
     return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create tab'})
+
+
+@login_required(login_url='/login')
+def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
+    if request.method == 'POST':
+        # Removing element or tab or board
+        if request.POST['operation'] == POST_OPERATION_REMOVE:
+            if elem_id:
+                Element.objects.filter(tab__id=tab_id).get(id=elem_id).delete()
+            elif tab_id:
+                Tab.objects.filter(board__id=board_id).get(id=tab_id).delete()
+            elif board_id:
+                Board.objects.get(id=board_id).delete()
+        return HttpResponse('OK')
+    return HttpResponse('NOK')

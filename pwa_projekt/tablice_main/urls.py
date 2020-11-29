@@ -12,4 +12,7 @@ urlpatterns = [
     path('new_board/', views.create_board, name='new_board'),
     path('board/<int:board_id>/', views.show_board, name='show_board'),
     path('board/<int:board_id>/new_tab', views.add_tab, name='add_tab'),
+    path('operation/<int:board_id>', views.operate_objects),
+    path('operation/<int:board_id>/<int:tab_id>', views.operate_objects),
+    path('operation/<int:board_id>/<int:tab_id>/<int:elem_id>', views.operate_objects),
 ]

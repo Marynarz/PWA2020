@@ -1,0 +1,2 @@
+POST_OPERATION_ADD = 'add'
+POST_OPERATION_REMOVE = 'remove'
