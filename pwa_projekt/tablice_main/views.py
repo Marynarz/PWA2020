@@ -93,6 +93,22 @@ def add_tab(request, board_id):
 
 
 @login_required(login_url='/login')
+def add_elem(request, board_id, tab_id):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            elem = Element(tab=Tab.objects.get(id=tab_id), creator=request.user,
+                           elem_name=form.cleaned_data.get('task_name'),
+                           description=form.cleaned_data.get('description'),
+                           estimation=form.cleaned_data.get('estimation'))
+            elem.save()
+            return redirect('/board/%d' % board_id)
+    else:
+        form = TaskForm
+    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create elem'})
+
+
+@login_required(login_url='/login')
 def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
     if request.method == 'POST':
         # Removing element or tab or board
@@ -103,6 +119,32 @@ def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
                 Tab.objects.filter(board__id=board_id).get(id=tab_id).delete()
             elif board_id:
                 Board.objects.get(id=board_id).delete()
-        if request.POST['operation'] == POST_OPERATION_ADD:
+        # Adding objects
+        elif request.POST['operation'] == POST_OPERATION_ADD:
+            if elem_id is None and board_id is not None and tab_id is not None:
+                form = TaskForm(request.POST)
+                if form.is_valid():
+                    elem = Element(tab=Tab.objects.get(id=tab_id), creator=request.user,
+                                   elem_name=form.cleaned_data.get('task_name'),
+                                   description=form.cleaned_data.get('description'),
+                                   estimation=form.cleaned_data.get('estimation'))
+                    elem.save()
+                    return redirect('/board/%d' % board_id)
+            elif tab_id is None and board_id is not None:
+                last_tab = Tab.objects.filter(board__id=board_id).order_by('-position').values_list('position')
+                if len(last_tab) == 0:
+                    last_tab = 0
+                else:
+                    last_tab = last_tab[0][0]
+                form = TabForm(request.POST)
+                if form.is_valid():
+                    tab = Tab(board=Board.objects.get(id=board_id), tab_name=form.cleaned_data.get('tab_name'),
+                              position=last_tab + 1)
+                    tab.save()
+            elif board_id is None:
+                form = BoardForm(request.POST)
+                if form.is_valid():
+                    board = Board(owner=request.user, board_name=form.cleaned_data.get('board_name'))
+                    board.save()
         return HttpResponse('OK')
     return HttpResponse('NOK')
