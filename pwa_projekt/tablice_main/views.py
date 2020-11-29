@@ -63,9 +63,29 @@ def create_board(request):
 
 
 @login_required(login_url='/login')
-def show_board(request, board_name):
-    board = Board.objects.get(board_name=board_name)
+def show_board(request, board_id):
+    board = Board.objects.get(id=board_id)
     tables = Tab.objects.filter(board=board)
-    elems = Element.objects.filter(tab=tables)
+    elems = Element.objects.filter(tab__in=tables)
     ret_dict = {'board': board, 'tabs': tables, 'elems': elems}
     return render(request, 'tablice_main/board.html', ret_dict)
+
+
+@login_required(login_url='/login')
+def add_tab(request, board_id):
+    if request.method == 'POST':
+        board = Board.objects.get(id=board_id)
+        last_tab = Tab.objects.filter(board=board).order_by('-position').values_list('position')
+        if len(last_tab) == 0:
+            last_tab = 0
+        else:
+            last_tab = last_tab[0][0]
+        form = TabForm(request.POST)
+        if form.is_valid():
+            tab = Tab(board=board, tab_name=form.cleaned_data.get('tab_name'), position=last_tab + 1)
+            tab.save()
+            return redirect('/board/' + board_id)
+    else:
+        form = BoardForm
+
+    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Create tab'})

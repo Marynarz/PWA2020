@@ -9,3 +9,7 @@ class TaskForm(forms.Form):
 
 class BoardForm(forms.Form):
     board_name = forms.CharField(label='Board name:', max_length=20)
+
+
+class TabForm(forms.Form):
+    tab_name = forms.CharField(label='Tab name:', max_length=20)

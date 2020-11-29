@@ -18,7 +18,7 @@ class Tab(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)   # Tab owner
     tab_name = models.CharField(max_length=20)                   # Tab name, max 20 signs
     position = models.IntegerField()                             # Position on board
-    no_of_elems = models.IntegerField()                          # Number of elements in tab
+    no_of_elems = models.IntegerField(default=0)                 # Number of elements in tab
 
     def __str__(self):
         return 'Tab: %s, Elems: %s, Board: %s' % (self.tab_name, self.no_of_elems, self.board)

@@ -10,5 +10,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('index/', views.index, name='index'),
     path('new_board/', views.create_board, name='new_board'),
-    path('board/<str:board_name>/', views.show_board, name='show_board'),
+    path('board/<int:board_id>/', views.show_board, name='show_board'),
+    path('board/<int:board_id>/new_tab', views.add_tab, name='add_tab'),
 ]
