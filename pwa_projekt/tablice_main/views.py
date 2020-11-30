@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import *
@@ -8,27 +8,33 @@ from .forms import *
 from .app_defs import *
 
 
-def user_detail(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
-    return HttpResponse(user)
-
-
-def register_user(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('/index')
+def start_page(request):
+    if request.user.is_authenticated:
+        return redirect('/index')
+    elif request.method == 'POST':
+        if 'log_user' in request.POST:
+            form = AuthenticationForm(request.POST)
+            if form.is_valid():
+                user = authenticate(username=form.username, password=form.password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('/index')
+        elif 'reg_user' in request.POST:
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+                return redirect('/index')
     else:
-        form = UserCreationForm()
-    return render(request, 'tablice_main/forms.html', {'form': form, 'method_name': 'Register'})
+        form_register = UserCreationForm()
+        form_login = AuthenticationForm()
+    return render(request, 'tablice_main/start.html', {'form_register': form_register, 'form_login': form_login})
 
 
-@login_required(login_url='/login')
+@login_required(login_url='')
 def index(request):
     aval_boards = Board.objects.filter(owner_id=request.user.id)
     return render(request, 'tablice_main/user-home.html', {'logged_in': request.user.is_authenticated,
@@ -40,16 +46,7 @@ def logout_view(request):
     return render(request, 'tablice_main/base.html', {'content': 'LogOut succesfull'})
 
 
-def login_view(request):
-    if request.method == 'POST':
-        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
-        if user is not None:
-            login(request, user)
-            return redirect('/index')
-    return render(request, 'tablice_main/user-login.html')
-
-
-@login_required(login_url='/login')
+@login_required(login_url='')
 def create_board(request):
     if request.method == 'POST':
         form = BoardForm(request.POST)
@@ -64,7 +61,7 @@ def create_board(request):
                                                        'form': form, 'method_name': 'Create board'})
 
 
-@login_required(login_url='/login')
+@login_required(login_url='')
 def show_board(request, board_id):
     board = Board.objects.get(id=board_id)
     tables = Tab.objects.filter(board=board)
@@ -73,7 +70,7 @@ def show_board(request, board_id):
     return render(request, 'tablice_main/board.html', ret_dict)
 
 
-@login_required(login_url='/login')
+@login_required(login_url='')
 def add_tab(request, board_id):
     if request.method == 'POST':
         last_tab = Tab.objects.filter(board__id=board_id).order_by('-position').values_list('position')
@@ -94,7 +91,7 @@ def add_tab(request, board_id):
                                                        'form': form, 'method_name': 'Create tab'})
 
 
-@login_required(login_url='/login')
+@login_required(login_url='')
 def add_elem(request, board_id, tab_id):
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -111,7 +108,7 @@ def add_elem(request, board_id, tab_id):
                                                        'form': form, 'method_name': 'Create elem'})
 
 
-@login_required(login_url='/login')
+@login_required(login_url='')
 def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
     if request.method == 'POST':
         # Removing element or tab or board
