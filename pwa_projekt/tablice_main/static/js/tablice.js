@@ -14,13 +14,10 @@ $(function(){
     }
     return cookieValue;
     }
-
-    $(".board").click(function(){
-        $(this).children(".board-body").slideToggle();
-    });
     $(".remove_obj").click(function(){
         var data = $(this).data('href');
         var csrftoken = getCookie('csrftoken');
+        var form = $('form').serializeArray()
         $.ajax({
         url: data,
         method: "POST",
@@ -29,5 +26,8 @@ $(function(){
         }).always(function(){
         location.reload(true)
         })
+    });
+    $(".add-board").click(function(){
+        $('.row').load('index/')
     });
 });

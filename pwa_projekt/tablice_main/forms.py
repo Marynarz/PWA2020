@@ -8,7 +8,8 @@ class TaskForm(forms.Form):
 
 
 class BoardForm(forms.Form):
-    board_name = forms.CharField(label='Board name:', max_length=20)
+    board_name = forms.CharField(label='Nazwa tablicy:', max_length=20)
+    description = forms.CharField(label='Opis')
 
 
 class TabForm(forms.Form):

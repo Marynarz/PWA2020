@@ -21,3 +21,7 @@
 .remove_obj{
     border_style:solid;
 }
+
+.add-board{
+    background-color: grey;
+}

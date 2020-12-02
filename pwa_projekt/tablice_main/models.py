@@ -8,6 +8,7 @@ class Board(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)                           # create time, not null
     participants = models.ManyToManyField(User, related_name='+')                   # board pariticipants
     board_name = models.CharField(max_length=20)                                    # board name, max 20 signs
+    description = models.TextField()
 
     def __str__(self):
         return 'Board: %s, create time: %s, owner: %s' % (self.board_name, self.create_time, self.owner)

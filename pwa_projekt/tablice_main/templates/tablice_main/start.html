@@ -23,7 +23,7 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form_login.as_p }}
-                    <input type="submit" class="btn btn-light btn-outline-danger" name="log_user">Zaloguj</input>
+                    <button type="submit" class="btn btn-light btn-outline-danger" name="log_user">Zaloguj</button>
                 </form>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form_register.as_p }}
-                    <input type="submit" class="btn btn-light btn-outline-danger" name="reg_user">Zarejestruj</input>
+                    <button type="submit" class="btn btn-light btn-outline-danger" name="reg_user">Zarejestruj</button>
                 </form>
             </div>
         </div>

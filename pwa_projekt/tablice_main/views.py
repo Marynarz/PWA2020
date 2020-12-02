@@ -13,14 +13,17 @@ def start_page(request):
         return redirect('/index')
     elif request.method == 'POST':
         if 'log_user' in request.POST:
-            form = AuthenticationForm(request.POST)
+            form = AuthenticationForm(None, request.POST, prefix='login')
             if form.is_valid():
-                user = authenticate(username=form.username, password=form.password)
+                username = request.POST['login-username']
+                password = request.POST['login-password']
+                user = authenticate(username=username, password=password)
                 if user is not None:
                     login(request, user)
                     return redirect('/index')
+
         elif 'reg_user' in request.POST:
-            form = UserCreationForm(request.POST)
+            form = UserCreationForm(request.POST, prefix='register')
             if form.is_valid():
                 form.save()
                 username = form.cleaned_data.get('username')
@@ -29,16 +32,18 @@ def start_page(request):
                 login(request, user)
                 return redirect('/index')
     else:
-        form_register = UserCreationForm()
-        form_login = AuthenticationForm()
+        form_register = UserCreationForm(prefix='register')
+        form_login = AuthenticationForm(prefix='login')
     return render(request, 'tablice_main/start.html', {'form_register': form_register, 'form_login': form_login})
 
 
 @login_required(login_url='')
 def index(request):
     aval_boards = Board.objects.filter(owner_id=request.user.id)
+    form = BoardForm()
     return render(request, 'tablice_main/user-home.html', {'logged_in': request.user.is_authenticated,
-                                                           'boards': aval_boards})
+                                                           'boards': aval_boards,
+                                                           'form': form})
 
 
 def logout_view(request):
@@ -55,7 +60,7 @@ def create_board(request):
             board.save()
             return redirect('/index')
     else:
-        form = BoardForm
+        form = BoardForm()
 
     return render(request, 'tablice_main/forms.html', {'logged_in': request.user.is_authenticated,
                                                        'form': form, 'method_name': 'Create board'})
