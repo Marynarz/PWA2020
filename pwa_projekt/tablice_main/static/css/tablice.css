@@ -25,3 +25,11 @@
 .add-board{
     background-color: grey;
 }
+
+.add-tab{
+    border-style: solid;
+}
+
+.add-tab-load{
+    background-color: grey;
+}

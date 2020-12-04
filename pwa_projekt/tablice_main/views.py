@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from .models import *
 from .forms import *
 from .app_defs import *
+import json
 
 
 def start_page(request):
@@ -56,7 +57,8 @@ def create_board(request):
     if request.method == 'POST':
         form = BoardForm(request.POST)
         if form.is_valid():
-            board = Board(owner=request.user, board_name=form.cleaned_data.get('board_name'))
+            board = Board(owner=request.user, board_name=form.cleaned_data.get('board_name'),
+                          description=form.cleaned_data.get('description'))
             board.save()
             return redirect('/index')
     else:
@@ -71,29 +73,10 @@ def show_board(request, board_id):
     board = Board.objects.get(id=board_id)
     tables = Tab.objects.filter(board=board)
     elems = Element.objects.filter(tab__in=tables)
-    ret_dict = {'board': board, 'tabs': tables, 'elems': elems, 'logged_in': request.user.is_authenticated}
+    tab_form = TabForm()
+    ret_dict = {'board': board, 'tabs': tables, 'elems': elems, 'logged_in': request.user.is_authenticated,
+                'form': tab_form}
     return render(request, 'tablice_main/board.html', ret_dict)
-
-
-@login_required(login_url='')
-def add_tab(request, board_id):
-    if request.method == 'POST':
-        last_tab = Tab.objects.filter(board__id=board_id).order_by('-position').values_list('position')
-        if len(last_tab) == 0:
-            last_tab = 0
-        else:
-            last_tab = last_tab[0][0]
-        form = TabForm(request.POST)
-        if form.is_valid():
-            tab = Tab(board=Board.objects.get(id=board_id), tab_name=form.cleaned_data.get('tab_name'),
-                      position=last_tab + 1)
-            tab.save()
-            return redirect('/board/%d' % board_id)
-    else:
-        form = TabForm
-
-    return render(request, 'tablice_main/forms.html', {'logged_in': request.user.is_authenticated,
-                                                       'form': form, 'method_name': 'Create tab'})
 
 
 @login_required(login_url='')
@@ -115,6 +98,7 @@ def add_elem(request, board_id, tab_id):
 
 @login_required(login_url='')
 def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
+    print(request)
     if request.method == 'POST':
         # Removing element or tab or board
         if request.POST['operation'] == POST_OPERATION_REMOVE:
@@ -141,11 +125,10 @@ def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
                     last_tab = 0
                 else:
                     last_tab = last_tab[0][0]
-                form = TabForm(request.POST)
-                if form.is_valid():
-                    tab = Tab(board=Board.objects.get(id=board_id), tab_name=form.cleaned_data.get('tab_name'),
-                              position=last_tab + 1)
-                    tab.save()
+                post_dict = request.POST.dict()
+                tab = Tab(board=Board.objects.get(id=board_id), tab_name=post_dict['form[1][value]'],
+                          position=last_tab + 1)
+                tab.save()
             elif board_id is None:
                 form = BoardForm(request.POST)
                 if form.is_valid():

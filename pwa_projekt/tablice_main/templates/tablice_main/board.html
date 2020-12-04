@@ -2,18 +2,27 @@
 
 {% block navigation %}
 <li class="nav-item">
-    <a class="nav-link" href="/board/{{ board.id }}/new_tab">Add tab</a>
-</li>
-<li class="nav-item">
     <a class="nav-link" href="/index">Home</a>
 </li>
 
 {% endblock %}
 
-{% block title %}Homepage {% endblock %}
-
 {% block content %}
 {% csrf_token %}
+<div class="container-fluid">
+
+            <div class="add-tab">
+            <p>Dodaj zakładke</p>
+            </div>
+            <div class="board-body">
+                <a style="diplay:none;" data-href="/operation/{{ board.id }}" id="page_url" href="#"></a>
+            <form id="addT">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn-large add-tab-load">Dodaj tablice</button>
+                </form>
+            </div>
+</div>
         <div class="container">
             <div class="row card-deck">
                 {% for tab in tabs %}

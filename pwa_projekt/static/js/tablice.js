@@ -1,16 +1,50 @@
 $(function(){
-    var board_id;
-    var tab_id;
-    var rem_url;
-    function remove_tab(board_id, tab_id){
-        board_id = board_id;
-        tab_id = tab_id;
-        rem_url = "/operation/" + board_id + "/" + tab_id
-    };
-    $(".board").click(function(){
-        $(this).children(".board-body").slideToggle();
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
+    $(".remove_obj").click(function(){
+        var data = $(this).data('href');
+        var csrftoken = getCookie('csrftoken');
+        var form = $('form').serializeArray()
+        $.ajax({
+        url: data,
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken},
+        data: {'operation': "remove" }
+        }).always(function(){
+        location.reload(true)
+        })
     });
-    $(".tab-remove").click(remove_tab(){
-        $.post(rem_url, {operation: 'remove'})
+    $(".add-board").click(function(){
+        $('.row').load('index/')
     });
+    $(".add-tab").click(function(){
+        $('.board-body').fadeToggle()
+    });
+    $(".add-tab-load").click(function(){
+        var data = $('a#page_url').data('href');
+        var csrftoken = getCookie('csrftoken');
+        var form = $('form#addT').serializeArray();
+        $.ajax({
+        url: data,
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken, form},
+        data: {'operation': "add", form}
+        }).always(function(){
+        location.reload(true)
+        });
+    });
+
 });

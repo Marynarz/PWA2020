@@ -30,4 +30,21 @@ $(function(){
     $(".add-board").click(function(){
         $('.row').load('index/')
     });
+    $(".add-tab").click(function(){
+        $('.board-body').fadeToggle()
+    });
+    $(".add-tab-load").click(function(){
+        var data = $('a#page_url').data('href');
+        var csrftoken = getCookie('csrftoken');
+        var form = $('form#addT').serializeArray();
+        $.ajax({
+        url: data,
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken, form},
+        data: {'operation': "add", form}
+        }).always(function(){
+        location.reload(true)
+        });
+    });
+
 });

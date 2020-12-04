@@ -9,8 +9,6 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('new_board/', views.create_board, name='new_board'),
     path('board/<int:board_id>/', views.show_board, name='show_board'),
-    path('board/<int:board_id>/new_tab', views.add_tab, name='add_tab'),
-    path('board/<int:board_id>/<int:tab_id>/new_elem', views.add_elem, name='add_tab'),
     path('operation', views.operate_objects),
     path('operation/<int:board_id>', views.operate_objects),
     path('operation/<int:board_id>/<int:tab_id>', views.operate_objects),

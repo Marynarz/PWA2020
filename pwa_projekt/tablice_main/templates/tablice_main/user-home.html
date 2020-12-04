@@ -16,7 +16,7 @@
             <div class="card-body">
                 <p class="card-txt">{{ board.description }}</p>
                 <p class="card-tcxt">
-                    <a href="#" data-href="/operation/{{ board.id }}" class="remove_obj">{{ board.board_name }}
+                    Usuń <a href="#" data-href="/operation/{{ board.id }}" class="remove_obj">{{ board.board_name }}
                     </a></p>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 <form action="/new_board/" method="post">
                     {% csrf_token %}
                 {{ form.as_p }}
-                    <input type="submit" class="btn-large add-board">Dodaj tablice</input>
+                    <button type="submit" class="btn-large add-board">Dodaj tablice</button>
                 </form>
             </div>
         </div>
