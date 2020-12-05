@@ -46,5 +46,19 @@ $(function(){
         location.reload(true)
         });
     });
-
+    $( ".tab" ).sortable({
+        axis: 'y',
+        update: function (event, ui) {
+            var url_pos = $('a#pos_url').data('href');
+            var data = $(this).sortable('serialize');
+            var csrftoken = getCookie('csrftoken');
+            // POST to server using $.post or $.ajax
+            $.ajax({
+                type: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                url: url_pos,
+                data: data
+            });
+        }
+        });
 });

@@ -1,9 +1,4 @@
 .board {
-    background-color: #f6b737;
-    border-radius: 8px;
-    border-style: solid;
-    border-color: #86aadf;
-    border-width: 3px;
 }
 
 .board-body{
@@ -12,24 +7,18 @@
 }
 
 .tab {
-    background-color: yellow;
 }
 
 .tab-body{
-    background-color: red;
 }
 .remove_obj{
-    border_style:solid;
 }
 
 .add-board{
-    background-color: grey;
 }
 
 .add-tab{
-    border-style: solid;
 }
 
 .add-tab-load{
-    background-color: grey;
 }

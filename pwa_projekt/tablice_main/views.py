@@ -71,11 +71,12 @@ def create_board(request):
 @login_required(login_url='')
 def show_board(request, board_id):
     board = Board.objects.get(id=board_id)
-    tables = Tab.objects.filter(board=board)
+    tables = Tab.objects.filter(board=board).order_by('position')
     elems = Element.objects.filter(tab__in=tables)
     tab_form = TabForm()
+    elem_form = TaskForm()
     ret_dict = {'board': board, 'tabs': tables, 'elems': elems, 'logged_in': request.user.is_authenticated,
-                'form': tab_form}
+                'form_tab': tab_form, 'form_elem': elem_form }
     return render(request, 'tablice_main/board.html', ret_dict)
 
 
@@ -136,3 +137,21 @@ def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
                     board.save()
         return HttpResponse('OK')
     return HttpResponse('NOK')
+
+
+@login_required(login_url='')
+def set_tab_postion(request, board_id):
+    _ = board_id
+    positions = request.POST.getlist('tab[]')
+    pos_no = 1
+
+    for tab in positions:
+        print(tab)
+        last_tab = Tab.objects.get(id=tab)
+        last_tab.position = pos_no
+        last_tab.save()
+        print(pos_no)
+        pos_no += 1
+
+    return HttpResponse('OK')
+
