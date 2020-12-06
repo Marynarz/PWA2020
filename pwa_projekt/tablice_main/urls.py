@@ -7,7 +7,6 @@ urlpatterns = [
     path('', views.start_page),
     path('logout/', views.logout_view, name='logout'),
     path('index/', views.index, name='index'),
-    path('new_board/', views.create_board, name='new_board'),
     path('board/<int:board_id>/', views.show_board, name='show_board'),
     path('operation', views.operate_objects),
     path('operation/<int:board_id>', views.operate_objects),

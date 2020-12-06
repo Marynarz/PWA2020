@@ -26,7 +26,7 @@
                 <h1>Dodaj tablice</h1></a>
             </div>
             <div class="card-body">
-                <form action="/new_board/" method="post">
+                <form id="addB" method="post">
                     {% csrf_token %}
                 {{ form.as_p }}
                     <button type="submit" class="btn-large add-board">Dodaj tablice</button>

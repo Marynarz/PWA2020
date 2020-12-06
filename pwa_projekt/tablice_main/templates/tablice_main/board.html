@@ -29,22 +29,31 @@
                 {% for tab in tabs %}
                 <div class="card bg-light" id="tab_{{ tab.id }}">
                     <div class="card-header">{{ tab.tab_name }}
-                    <div class="add-tab">
-            <p>Dodaj elemente</p>
-            </div>
-            <div class="board-body">
-                <a style="diplay:none;" data-href="/operation/{{ board.id }}/{{ tab.id }}" id="add_tab_url" href="#"></a>
-                <form id="addE">
-                    {% csrf_token %}
-                    {{ form_elem.as_p }}
-                    <button type="submit" class="btn-large add-tab-load">Dodaj tablice</button>
-                </form>
-            </div>
+                        {% if tab.position == 1 %}
+
+                        <div class="add-elem">
+                            <p>Dodaj element</p>
+                        </div>
+                        <div class="elem-add-body">
+                             <a style="diplay:none;" data-href="/operation/{{ board.id }}/{{ tab.id }}" id="add_tab_url" href="#"></a>
+                             <form id="addE">
+                                 {% csrf_token %}
+                                 {{ form_elem.as_p }}
+                                 <button type="submit" class="btn-large add-elem-load">Dodaj element</button>
+                             </form>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="card-body">
                         {% for elem in elems %}
-                            {% if elem.tab == tab %}
-                                <div> {{ elem.elem_name }} </div>
+                            {% if elem.tab.id == tab.id %}
+                                <div class="elem">{{ elem.elem_name }}
+                                    <div class="elem-body">
+                                        <p>Tworca: {{elem.creator.username}}</p>
+                                        <p>Opis: {{elem.description}}</p>
+                                        <p>Data utworzenia: {{elem.create_time}}</p>
+                                    </div>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>

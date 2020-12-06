@@ -32,8 +32,7 @@ class Element(models.Model):
     creator = models.ForeignKey(User, on_delete=models.DO_NOTHING)                       # Creator
     elem_name = models.CharField(max_length=20)                                          # Name of element
     description = models.TextField()                                                     # Task description
-    estimation = models.DurationField()                                                  # Time estimated
-    assignee = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='+', default=None)    # Assignee
+    assignee = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='+', default=None, null=True)
 
     def __str__(self):
         return 'Element: %s\n\tDescription: %s' % (self.elem_name, self.description)

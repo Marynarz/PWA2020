@@ -22,3 +22,13 @@
 
 .add-tab-load{
 }
+
+.elem-add-body{
+    display: none;
+    border-style: solid;
+}
+.add-elem{
+    float: right;
+}
+.add-elem-load{
+}

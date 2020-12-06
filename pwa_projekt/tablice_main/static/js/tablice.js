@@ -28,7 +28,16 @@ $(function(){
         })
     });
     $(".add-board").click(function(){
-        $('.row').load('index/')
+        var csrftoken = getCookie('csrftoken');
+        var form = $('form#addB').serializeArray();
+        $.ajax({
+        url: '/operation',
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken, form},
+        data: {'operation': "add", form}
+        }).always(function(){
+        location.reload(true)
+        });
     });
     $(".add-tab").click(function(){
         $('.board-body').fadeToggle()
@@ -61,4 +70,23 @@ $(function(){
             });
         }
         });
+    $(".add-elem").click(function(){
+        $('.elem-add-body').fadeToggle()
+    });
+    $(".add-elem-load").click(function(){
+        var data = $('a#add_tab_url').data('href');
+        var csrftoken = getCookie('csrftoken');
+        var form = $('form#addE').serializeArray();
+        $.ajax({
+        url: data,
+        method: "POST",
+        headers: {'X-CSRFToken': csrftoken, form},
+        data: {'operation': "add", form}
+        }).always(function(){
+        location.reload(true)
+        });
+    });
+        $(".elem").click(function(){
+        $('.elem-body').fadeToggle()
+    });
 });

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from .models import *
 from .forms import *
 from .app_defs import *
-import json
+import datetime
 
 
 def start_page(request):
@@ -53,48 +53,20 @@ def logout_view(request):
 
 
 @login_required(login_url='')
-def create_board(request):
-    if request.method == 'POST':
-        form = BoardForm(request.POST)
-        if form.is_valid():
-            board = Board(owner=request.user, board_name=form.cleaned_data.get('board_name'),
-                          description=form.cleaned_data.get('description'))
-            board.save()
-            return redirect('/index')
-    else:
-        form = BoardForm()
-
-    return render(request, 'tablice_main/forms.html', {'logged_in': request.user.is_authenticated,
-                                                       'form': form, 'method_name': 'Create board'})
-
-
-@login_required(login_url='')
 def show_board(request, board_id):
+    # drzewo obiektow
     board = Board.objects.get(id=board_id)
     tables = Tab.objects.filter(board=board).order_by('position')
-    elems = Element.objects.filter(tab__in=tables)
+    elems = Element.objects.filter(tab__in=tables).order_by('create_time')
+
+    # formularze
     tab_form = TabForm()
     elem_form = TaskForm()
+
+    # slownik do zwrocenia
     ret_dict = {'board': board, 'tabs': tables, 'elems': elems, 'logged_in': request.user.is_authenticated,
                 'form_tab': tab_form, 'form_elem': elem_form }
     return render(request, 'tablice_main/board.html', ret_dict)
-
-
-@login_required(login_url='')
-def add_elem(request, board_id, tab_id):
-    if request.method == 'POST':
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            elem = Element(tab=Tab.objects.get(id=tab_id), creator=request.user,
-                           elem_name=form.cleaned_data.get('task_name'),
-                           description=form.cleaned_data.get('description'),
-                           estimation=form.cleaned_data.get('estimation'))
-            elem.save()
-            return redirect('/board/%d' % board_id)
-    else:
-        form = TaskForm
-    return render(request, 'tablice_main/forms.html', {'logged_in': request.user.is_authenticated,
-                                                       'form': form, 'method_name': 'Create elem'})
 
 
 @login_required(login_url='')
@@ -111,30 +83,25 @@ def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
                 Board.objects.get(id=board_id).delete()
         # Adding objects
         elif request.POST['operation'] == POST_OPERATION_ADD:
+            post_dict = request.POST.dict()
             if elem_id is None and board_id is not None and tab_id is not None:
-                form = TaskForm(request.POST)
-                if form.is_valid():
-                    elem = Element(tab=Tab.objects.get(id=tab_id), creator=request.user,
-                                   elem_name=form.cleaned_data.get('task_name'),
-                                   description=form.cleaned_data.get('description'),
-                                   estimation=form.cleaned_data.get('estimation'))
-                    elem.save()
-                    return redirect('/board/%d' % board_id)
+                elem = Element(tab=Tab.objects.get(id=tab_id), creator=request.user,
+                               elem_name=post_dict['form[1][value]'],
+                               description=post_dict['form[2][value]'])
+                elem.save()
             elif tab_id is None and board_id is not None:
                 last_tab = Tab.objects.filter(board__id=board_id).order_by('-position').values_list('position')
                 if len(last_tab) == 0:
                     last_tab = 0
                 else:
                     last_tab = last_tab[0][0]
-                post_dict = request.POST.dict()
                 tab = Tab(board=Board.objects.get(id=board_id), tab_name=post_dict['form[1][value]'],
                           position=last_tab + 1)
                 tab.save()
             elif board_id is None:
-                form = BoardForm(request.POST)
-                if form.is_valid():
-                    board = Board(owner=request.user, board_name=form.cleaned_data.get('board_name'))
-                    board.save()
+                board = Board(owner=request.user, board_name=post_dict['form[1][value]'],
+                              description=post_dict['form[2][value]'])
+                board.save()
         return HttpResponse('OK')
     return HttpResponse('NOK')
 
@@ -146,11 +113,9 @@ def set_tab_postion(request, board_id):
     pos_no = 1
 
     for tab in positions:
-        print(tab)
         last_tab = Tab.objects.get(id=tab)
         last_tab.position = pos_no
         last_tab.save()
-        print(pos_no)
         pos_no += 1
 
     return HttpResponse('OK')
