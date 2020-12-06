@@ -59,13 +59,17 @@ def show_board(request, board_id):
     tables = Tab.objects.filter(board=board).order_by('position')
     elems = Element.objects.filter(tab__in=tables).order_by('create_time')
 
+    aval_tabs = []
+    for tab in tables:
+        aval_tabs.append((tab.tab_name, tab.id))
+
     # formularze
     tab_form = TabForm()
     elem_form = TaskForm()
 
     # slownik do zwrocenia
     ret_dict = {'board': board, 'tabs': tables, 'elems': elems, 'logged_in': request.user.is_authenticated,
-                'form_tab': tab_form, 'form_elem': elem_form }
+                'form_tab': tab_form, 'form_elem': elem_form, 'aval_tabs': aval_tabs}
     return render(request, 'tablice_main/board.html', ret_dict)
 
 
@@ -117,6 +121,14 @@ def set_tab_postion(request, board_id):
         last_tab.position = pos_no
         last_tab.save()
         pos_no += 1
+
+    return HttpResponse('OK')
+
+
+@login_required(login_url='')
+def set_elem_postion(request, tab_id):
+    positions = request.POST
+    print(positions)
 
     return HttpResponse('OK')
 
