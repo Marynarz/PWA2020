@@ -86,4 +86,22 @@ $(function(){
         location.reload(true)
         });
     });
+        $(".elem").click(function(){
+        $('.elem-body').fadeToggle()
+    });
+    $( ".sortable" ).sortable({
+        connectWith: '.sortable',
+        update: function (event, ui) {
+            var url_pos = $('a#pos_elem_url').data('href');
+            var data = $(this).sortable('serialize');
+            var csrftoken = getCookie('csrftoken');
+            // POST to server using $.post or $.ajax
+            $.ajax({
+                type: 'POST',
+                headers: {'X-CSRFToken': csrftoken},
+                url: url_pos,
+                data: data
+            });
+        }
+        });
 });

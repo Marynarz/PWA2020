@@ -18,15 +18,8 @@
         <h1 class="navbar-brand" style="font-family: Pacifico">Trello klon - PWA 2020</h1>
         <ul class="navbar-nav mr-auto">
                 {% if logged_in %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/new_board">New board</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Log Out</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Log In</a>
+                <li class="nav-item logout">
+                    <a class="nav-link" href="{% url 'tablice:logout' %}">Log Out</a>
                 </li>
                 {% endif %}
                 {% block navigation %}

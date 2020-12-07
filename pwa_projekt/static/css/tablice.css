@@ -32,3 +32,17 @@
 }
 .add-elem-load{
 }
+
+.elem{
+    border-style: solid;
+}
+
+.elem-body{
+    display: none;
+}
+.sortable{
+}
+
+.logout{
+    float: right;
+}
