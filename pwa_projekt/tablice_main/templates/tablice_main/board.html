@@ -12,14 +12,14 @@
 <div class="container-fluid">
 
             <div class="add-tab">
-            <p>Dodaj zakładke</p>
+            <button type="button" class="btn btn-outline-secondary btn-block">Dodaj zakładke</button>
             </div>
             <div class="board-body">
                 <a style="diplay:none;" data-href="/operation/{{ board.id }}" id="page_url" href="#"></a>
             <form id="addT">
                     {% csrf_token %}
                     {{ form_tab.as_p }}
-                    <button type="submit" class="btn-large add-tab-load">Dodaj tablice</button>
+                    <button type="submit" class="btn btn-outline-secondary add-tab-load">Dodaj tablice</button>
                 </form>
             </div>
 </div>

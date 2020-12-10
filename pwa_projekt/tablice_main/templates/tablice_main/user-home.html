@@ -6,7 +6,7 @@
 {% csrf_token %}
 <div class="card-columns">
 {% for board in boards %}
-        <div class="card text-white bg-dark col">
+        <div class="card bg-light col">
             <div class="card-header">
                 <h1>
                 <a href="/board/{{ board.id}}">
@@ -21,7 +21,7 @@
             </div>
         </div>
     {% endfor %}
-        <div class="card text-black bg-primary col">
+        <div class="card text-black bg-secondary col">
             <div class="card-header">
                 <h1>Dodaj tablice</h1></a>
             </div>

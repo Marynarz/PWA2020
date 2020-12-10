@@ -3,7 +3,7 @@
 
 .board-body{
     display: none;
-    border-style: solid;
+    padding: 5px;
 }
 
 .tab {
@@ -44,5 +44,4 @@
 }
 
 .logout{
-    float: right;
 }
