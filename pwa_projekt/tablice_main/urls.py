@@ -13,5 +13,5 @@ urlpatterns = [
     path('operation/<int:board_id>/<int:tab_id>', views.operate_objects),
     path('operation/<int:board_id>/<int:tab_id>/<int:elem_id>', views.operate_objects),
     path('position/tab/<int:board_id>', views.set_tab_postion),
-    path('position/elem/<int:tab_id>', views.set_elem_postion)
+    path('position/elem/', views.set_elem_postion)
 ]

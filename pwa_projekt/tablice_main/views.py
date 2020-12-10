@@ -38,7 +38,7 @@ def start_page(request):
     return render(request, 'tablice_main/start.html', {'form_register': form_register, 'form_login': form_login})
 
 
-@login_required(login_url='')
+@login_required(login_url='/')
 def index(request):
     aval_boards = Board.objects.filter(owner_id=request.user.id)
     form = BoardForm()
@@ -49,10 +49,10 @@ def index(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, 'tablice_main/base.html', {'content': 'LogOut succesfull'})
+    return redirect('/')
 
 
-@login_required(login_url='')
+@login_required(login_url='/')
 def show_board(request, board_id):
     # drzewo obiektow
     board = Board.objects.get(id=board_id)
@@ -73,7 +73,7 @@ def show_board(request, board_id):
     return render(request, 'tablice_main/board.html', ret_dict)
 
 
-@login_required(login_url='')
+@login_required(login_url='/')
 def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
     print(request)
     if request.method == 'POST':
@@ -110,7 +110,7 @@ def operate_objects(request, board_id=None, tab_id=None, elem_id=None):
     return HttpResponse('NOK')
 
 
-@login_required(login_url='')
+@login_required(login_url='/')
 def set_tab_postion(request, board_id):
     _ = board_id
     positions = request.POST.getlist('tab[]')
@@ -125,10 +125,14 @@ def set_tab_postion(request, board_id):
     return HttpResponse('OK')
 
 
-@login_required(login_url='')
-def set_elem_postion(request, tab_id):
-    positions = request.POST
-    print(positions)
-
+@login_required(login_url='/')
+def set_elem_postion(request):
+    if request.method == 'POST':
+        if 'data[]' in request.POST:
+            elem_id = int(request.POST.getlist('data[]')[0].replace('sort_', ''))
+            new_tab = int(request.POST.getlist('parent')[0].replace('tab_', ''))
+            elem = Element.objects.get(id=elem_id)
+            elem.tab = Tab.objects.get(id=new_tab)
+            elem.save()
     return HttpResponse('OK')
 

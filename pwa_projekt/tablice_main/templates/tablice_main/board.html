@@ -2,7 +2,7 @@
 
 {% block navigation %}
 <li class="nav-item">
-    <a class="nav-link" href="/index">Home</a>
+    <a class="nav-link" href="{% url 'tablice:index' %}">Home</a>
 </li>
 
 {% endblock %}
@@ -12,20 +12,19 @@
 <div class="container-fluid">
 
             <div class="add-tab">
-            <button type="button" class="btn btn-outline-secondary btn-block">Dodaj zakładke</button>
+            <button type="button" class="btn btn-outline-secondary btn-block">Dodaj zakładkę</button>
             </div>
             <div class="board-body">
                 <a style="diplay:none;" data-href="/operation/{{ board.id }}" id="page_url" href="#"></a>
             <form id="addT">
                     {% csrf_token %}
                     {{ form_tab.as_p }}
-                    <button type="submit" class="btn btn-outline-secondary add-tab-load">Dodaj tablice</button>
+                    <button type="submit" class="btn btn-outline-secondary add-tab-load">Dodaj zakładkę</button>
                 </form>
             </div>
 </div>
         <div class="container-fluid">
             <div class="row card-deck tab">
-                <a style="diplay:none;" data-href="/position/elem/{{ board.id }}" id="pos_elem_url" href="#"></a>
                 <a style="diplay:none;" data-href="/position/tab/{{ board.id }}" id="pos_url" href="#"></a>
                 {% for tab in tabs %}
                 <div class="card bg-light" id="tab_{{ tab.id }}">
@@ -45,11 +44,12 @@
                         </div>
                         {% endif %}
                     </div>
-                    <div class="card-body sortable">
+                    <div class="card-body sortable" id="tabbody_{{ tab.id }}">
 
                         {% for elem in elems %}
                             {% if elem.tab.id == tab.id %}
-                                <div id="sort_{{ tab.id }}">{{ elem.elem_name }}
+                                <div class="card" id="sort_{{ elem.id }}">
+                                    <p>{{ elem.elem_name }}</p>
                                     <div>
                                         <p>Tworca: {{elem.creator.username}}</p>
                                         <p>Opis: {{elem.description}}</p>
