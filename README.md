@@ -12,11 +12,14 @@ Programowanie aplikacji webowych 2020
 * CMS: bootstrap4
 
 ## Run:
-'''
+~~~
 git clone https://github.com/Marynarz/PWA2020.git
 cd PWA2020/pwa_project
+python3 manage.py makemigrations tablice_main
+python3 manage.py migrate
+python3 manage.py collectstatic
 python3 manage.py runserver
-'''
+~~~
 
 ## URLS:
 url | description
