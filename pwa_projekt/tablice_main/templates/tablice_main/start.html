@@ -1,0 +1,41 @@
+{% extends 'tablice_main/base.html' %}
+
+{% block navigation %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container-lg">
+    <h1 style="font-family: Pacifico">Trello klon - PWA 2020
+    <small>Niedzielski</small>
+    </h1>
+</div>
+<div class="container-lg">
+    <div class="row card-deck">
+        <div class="card bg-secondary">
+             <div class="card-header">
+                Zaloguj
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_login.as_p }}
+                    <button type="submit" class="btn btn-light btn-outline-danger" name="log_user">Zaloguj</button>
+                </form>
+            </div>
+        </div>
+        <div class="card bg-info">
+            <div class="card-header">
+                Zarejestruj
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form_register.as_p }}
+                    <button type="submit" class="btn btn-light btn-outline-danger" name="reg_user">Zarejestruj</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

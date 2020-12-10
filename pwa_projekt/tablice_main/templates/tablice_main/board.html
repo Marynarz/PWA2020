@@ -1,0 +1,68 @@
+{% extends 'tablice_main/base.html' %}
+
+{% block navigation %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'tablice:index' %}">Home</a>
+</li>
+
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="container-fluid">
+
+            <div class="add-tab">
+            <button type="button" class="btn btn-outline-secondary btn-block">Dodaj zakładkę</button>
+            </div>
+            <div class="board-body">
+                <a style="diplay:none;" data-href="/operation/{{ board.id }}" id="page_url" href="#"></a>
+            <form id="addT">
+                    {% csrf_token %}
+                    {{ form_tab.as_p }}
+                    <button type="submit" class="btn btn-outline-secondary add-tab-load">Dodaj zakładkę</button>
+                </form>
+            </div>
+</div>
+        <div class="container-fluid">
+            <div class="row card-deck tab">
+                <a style="diplay:none;" data-href="/position/tab/{{ board.id }}" id="pos_url" href="#"></a>
+                {% for tab in tabs %}
+                <div class="card bg-light" id="tab_{{ tab.id }}">
+                    <div class="card-header">{{ tab.tab_name }}
+                        {% if tab.position == 1 %}
+
+                        <div class="add-elem">
+                            <p>Dodaj element</p>
+                        </div>
+                        <div class="elem-add-body">
+                             <a style="diplay:none;" data-href="/operation/{{ board.id }}/{{ tab.id }}" id="add_tab_url" href="#"></a>
+                             <form id="addE">
+                                 {% csrf_token %}
+                                 {{ form_elem.as_p }}
+                                 <button type="submit" class="btn-large add-elem-load">Dodaj element</button>
+                             </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body sortable" id="tabbody_{{ tab.id }}">
+
+                        {% for elem in elems %}
+                            {% if elem.tab.id == tab.id %}
+                                <div class="card" id="sort_{{ elem.id }}">
+                                    <p>{{ elem.elem_name }}</p>
+                                    <div>
+                                        <p>Tworca: {{elem.creator.username}}</p>
+                                        <p>Opis: {{elem.description}}</p>
+                                        <p>Data utworzenia: {{elem.create_time}}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer">Usun <a href="#" data-href="/operation/{{ board.id }}/{{tab.id}}" class="remove_obj">{{ tab.tab_name }}</a></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+{% endblock %}

@@ -1,7 +1,7 @@
-"""pwa URL Configuration
+"""pwa_projekt URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
+    https://docs.djangoproject.com/en/3.1/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -14,17 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path, include
 
-from . import views
-
-app_name = 'pwa'
 urlpatterns = [
+    path('', include('tablice_main.urls')),
     path('admin/', admin.site.urls),
-    path('user/<int:user_id>/', views.user_detail, name='user_detail'),
-    path('registration/', views.register_user, name='register_user'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('index/', views.index, name='index'),
-    path('new_board/', views.create_board, name='new_board'),
 ]

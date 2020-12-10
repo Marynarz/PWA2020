@@ -1,0 +1,47 @@
+.board {
+}
+
+.board-body{
+    display: none;
+    padding: 5px;
+}
+
+.tab {
+}
+
+.tab-body{
+}
+.remove_obj{
+}
+
+.add-board{
+}
+
+.add-tab{
+}
+
+.add-tab-load{
+}
+
+.elem-add-body{
+    display: none;
+    border-style: solid;
+}
+.add-elem{
+    float: right;
+}
+.add-elem-load{
+}
+
+.elem{
+    border-style: solid;
+}
+
+.elem-body{
+    display: none;
+}
+.sortable{
+}
+
+.logout{
+}
